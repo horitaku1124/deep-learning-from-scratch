@@ -10,6 +10,9 @@ def step_function(x):
     return np.array(x > 0, dtype=np.int)
 
 
+"""
+    Retutn: ndarray[Double]
+"""
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))    
 
@@ -38,12 +41,23 @@ def softmax(x):
     x = x - np.max(x) # オーバーフロー対策
     return np.exp(x) / np.sum(np.exp(x))
 
-
 def mean_squared_error(y, t):
-    return 0.5 * np.sum((y-t)**2)
+    """
+        Returns:
+            numpy.float64:
+    """
+    result = 0.5 * np.sum((y-t)**2)
+    return result
 
 
 def cross_entropy_error(y, t):
+    """
+        Args:
+            y(numpy.ndarray): 2d array
+            t(numpy.ndarray): 1d array
+        Returns:
+            numpy.float64:
+    """
     if y.ndim == 1:
         t = t.reshape(1, t.size)
         y = y.reshape(1, y.size)
@@ -53,9 +67,12 @@ def cross_entropy_error(y, t):
         t = t.argmax(axis=1)
              
     batch_size = y.shape[0]
-    return -np.sum(np.log(y[np.arange(batch_size), t] + 1e-7)) / batch_size
+    result = -np.sum(np.log(y[np.arange(batch_size), t] + 1e-7)) / batch_size
+    return result
 
 
 def softmax_loss(X, t):
     y = softmax(X)
-    return cross_entropy_error(y, t)
+    result = cross_entropy_error(y, t)
+    print("softmax_loss.result", result, type(result))
+    return result
