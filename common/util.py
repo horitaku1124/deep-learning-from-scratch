@@ -60,6 +60,7 @@ def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
     N, C, H, W = input_data.shape
 
     # Int out_h, out_w
+    # // = Floor division
     out_h = (H + 2*pad - filter_h)//stride + 1
     out_w = (W + 2*pad - filter_w)//stride + 1
 

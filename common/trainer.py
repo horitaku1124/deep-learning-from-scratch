@@ -11,6 +11,10 @@ class Trainer:
                  epochs=20, mini_batch_size=100,
                  optimizer='SGD', optimizer_param={'lr':0.01}, 
                  evaluate_sample_num_per_epoch=None, verbose=True):
+        """
+            Args:
+                network(DeepConvNet):
+        """
         self.network = network
         self.verbose = verbose
         self.x_train = x_train

@@ -40,7 +40,7 @@ class DeepConvNet:
         self.params['W8'] = wight_init_scales[7] * np.random.randn(hidden_size, output_size)
         self.params['b8'] = np.zeros(output_size)
 
-        # レイヤの生成===========
+        # レイヤの生成=========== P242 図8-1 参照
         self.layers = []
         self.layers.append(Convolution(self.params['W1'], self.params['b1'], 
                            conv_param_1['stride'], conv_param_1['pad']))
@@ -72,6 +72,13 @@ class DeepConvNet:
         self.last_layer = SoftmaxWithLoss()
 
     def predict(self, x, train_flg=False):
+        """
+            Args:
+                x(numpy.ndarray):
+                train_flg(bool):
+            Returns:
+                numpy.ndarray
+        """
         for layer in self.layers:
             if isinstance(layer, Dropout):
                 x = layer.forward(x, train_flg)
@@ -84,11 +91,21 @@ class DeepConvNet:
         return self.last_layer.forward(y, t)
 
     def accuracy(self, x, t, batch_size=100):
+        """
+        Args:
+            x(numpy.ndarray): 
+            t(numpy.ndarray): 
+            batch_size(Int): 
+        Returns:
+            numpy.float64: 
+        """
         if t.ndim != 1 : t = np.argmax(t, axis=1)
 
+        # numpy.float64 acc
         acc = 0.0
 
         for i in range(int(x.shape[0] / batch_size)):
+        # numpy.ndarray tx,tt,y
             tx = x[i*batch_size:(i+1)*batch_size]
             tt = t[i*batch_size:(i+1)*batch_size]
             y = self.predict(tx, train_flg=False)
@@ -97,6 +114,12 @@ class DeepConvNet:
 
         return acc / x.shape[0]
 
+    """
+        Parameter:
+            x: numpy.ndarray
+            t: numpy.ndarray
+        Return: dict
+    """
     def gradient(self, x, t):
         # forward
         self.loss(x, t)
